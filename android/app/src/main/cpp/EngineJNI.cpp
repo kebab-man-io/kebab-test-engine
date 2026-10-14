@@ -1,14 +1,21 @@
 #include <jni.h>
 #include <cstdint>
 
+#include <android/native_window_jni.h>
+
 #include "Engine.h"
 
 using kebab::Engine;
 
 extern "C" JNIEXPORT jlong JNICALL
 Java_com_kebab_engine_GameEngine_nativeCreate(
-    JNIEnv*, jobject, jint width, jint height) {
-    auto* engine = new Engine(static_cast<int>(width), static_cast<int>(height));
+    JNIEnv* env, jobject, jint width, jint height, jobject surface) {
+    if (!surface) return 0;
+
+    ANativeWindow* window = ANativeWindow_fromSurface(env, surface);
+    if (!window) return 0;
+
+    auto* engine = new Engine(static_cast<int>(width), static_cast<int>(height), window);
     return static_cast<jlong>(reinterpret_cast<std::uintptr_t>(engine));
 }
 
