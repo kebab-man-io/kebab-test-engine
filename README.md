@@ -1,4 +1,4 @@
-# Gradle properties:
+# Gradle properties
 low ram usage setup:
 org.gradle.jvmargs=-Xmx256m -XX:MaxMetaspaceSize=128m -XX:+UseSerialGC
 
