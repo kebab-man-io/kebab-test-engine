@@ -1,5 +1,7 @@
 package com.kebab.engine
 
+import android.view.Surface
+
 class GameEngine {
     companion object {
         init {
@@ -9,9 +11,10 @@ class GameEngine {
 
     private var handle: Long = 0L
 
-    fun create(width: Int, height: Int) {
+    fun create(width: Int, height: Int, surface: Surface) {
         check(handle == 0L) { "Engine already created" }
-        handle = nativeCreate(width, height)
+        handle = nativeCreate(width, height, surface)
+        check(handle != 0L) { "Failed to create native engine" }
     }
 
     fun update(deltaTime: Float) {
@@ -29,7 +32,7 @@ class GameEngine {
         }
     }
 
-    private external fun nativeCreate(width: Int, height: Int): Long
+    private external fun nativeCreate(width: Int, height: Int, surface: Surface): Long
     private external fun nativeUpdate(handle: Long, deltaTime: Float)
     private external fun nativeRender(handle: Long)
     private external fun nativeDestroy(handle: Long)
